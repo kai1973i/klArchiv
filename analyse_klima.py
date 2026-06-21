@@ -233,7 +233,7 @@ def saisonale_boxplots(df: pd.DataFrame):
     for ax, (col, label) in zip(axes, spalten):
         s = df[col].dropna()
         daten_pro_monat = [s[s.index.month == m].values for m in range(1, 13)]
-        bp = ax.boxplot(daten_pro_monat, labels=monate_kurz, patch_artist=True,
+        bp = ax.boxplot(daten_pro_monat, tick_labels=monate_kurz, patch_artist=True,
                         flierprops={"marker": ".", "markersize": 2, "alpha": 0.3},
                         medianprops={"color": "red", "linewidth": 2})
         colors = plt.cm.coolwarm(np.linspace(0, 1, 12))
@@ -1315,6 +1315,300 @@ def jahresgang_baender(df: pd.DataFrame):
 
 
 # ---------------------------------------------------------------------------
+# 21. Starkregen vertieft: Perzentile, Max-Mehrtagessummen, Wiederkehr
+# ---------------------------------------------------------------------------
+def starkregen_vertieft(df: pd.DataFrame):
+    p = df["Niederschlagsmenge_mm"].dropna()
+    p_wet = p[p >= 1.0]
+
+    # Jahresweise Kenngroessen
+    p95 = p_wet.resample("YE").quantile(0.95)
+    p99 = p_wet.resample("YE").quantile(0.99)
+    p95.index = p95.index.year
+    p99.index = p99.index.year
+
+    max1 = p.resample("YE").max()
+    max3 = p.rolling(3, min_periods=3).sum().resample("YE").max()
+    max5 = p.rolling(5, min_periods=5).sum().resample("YE").max()
+    max1.index = max1.index.year
+    max3.index = max3.index.year
+    max5.index = max5.index.year
+
+    # Empirische Wiederkehrzeit fuer jaehrliche 1-Tages-Maxima
+    annual_max = max1.dropna().sort_values(ascending=False)
+    n = len(annual_max)
+    rank = np.arange(1, n + 1)
+    wiederkehr = (n + 1) / rank
+
+    print()
+    print("=" * 70)
+    print("STARKREGEN VERTIEFT (Perzentile, Mehrtagessummen, Wiederkehr)")
+    print("=" * 70)
+    print(f"  Wet-Day P95 Mittel: {p95.mean():.1f} mm")
+    print(f"  Wet-Day P99 Mittel: {p99.mean():.1f} mm")
+    print(f"  Max 1-Tag Mittel:   {max1.mean():.1f} mm")
+    print(f"  Max 3-Tage Mittel:  {max3.mean():.1f} mm")
+    print(f"  Max 5-Tage Mittel:  {max5.mean():.1f} mm")
+    print(f"  Staerkstes 1-Tages-Ereignis: {annual_max.iloc[0]:.1f} mm")
+    print(f"  Empirische Wiederkehr dazu:  {wiederkehr[0]:.1f} Jahre")
+
+    fig, axes = plt.subplots(3, 1, figsize=(14, 13))
+
+    ax = axes[0]
+    ax.plot(p95.index, p95.values, color="royalblue", linewidth=1.5, label="P95 (Wet Days)")
+    ax.plot(p99.index, p99.values, color="navy", linewidth=1.5, label="P99 (Wet Days)")
+    ax.plot(p95.rolling(10, center=True).mean(), "--", color="royalblue", linewidth=2)
+    ax.plot(p99.rolling(10, center=True).mean(), "--", color="navy", linewidth=2)
+    ax.set_title("Jaehrliche Starkregen-Perzentile")
+    ax.set_ylabel("mm")
+    ax.legend(fontsize=8)
+    ax.grid(alpha=0.3)
+
+    ax = axes[1]
+    ax.plot(max1.index, max1.values, color="firebrick", linewidth=1.2, label="Max 1 Tag")
+    ax.plot(max3.index, max3.values, color="darkorange", linewidth=1.2, label="Max 3 Tage")
+    ax.plot(max5.index, max5.values, color="sienna", linewidth=1.2, label="Max 5 Tage")
+    ax.plot(max1.rolling(10, center=True).mean(), color="firebrick", linestyle="--", linewidth=2)
+    ax.plot(max3.rolling(10, center=True).mean(), color="darkorange", linestyle="--", linewidth=2)
+    ax.plot(max5.rolling(10, center=True).mean(), color="sienna", linestyle="--", linewidth=2)
+    ax.set_title("Jaehrliche Maximal-Summen (1/3/5 Tage)")
+    ax.set_ylabel("mm")
+    ax.legend(fontsize=8)
+    ax.grid(alpha=0.3)
+
+    ax = axes[2]
+    ax.scatter(wiederkehr, annual_max.values, color="darkblue", s=22, alpha=0.8)
+    ax.set_xscale("log")
+    ax.set_xlabel("Empirische Wiederkehrzeit (Jahre, log-Skala)")
+    ax.set_ylabel("Jaehrliches 1-Tages-Maximum (mm)")
+    ax.set_title("Wiederkehrkurve (empirisch, plotting position)")
+    ax.grid(alpha=0.3, which="both")
+
+    plt.tight_layout()
+    fig.savefig(OUTPUT_DIR / "20_starkregen_vertieft.png", dpi=150)
+    plt.close(fig)
+    print("→ Gespeichert: 20_starkregen_vertieft.png")
+
+
+# ---------------------------------------------------------------------------
+# 22. Duerreindikatoren: SPI-3 und SPEI-3 (standardisiert)
+# ---------------------------------------------------------------------------
+def duerreindizes_spi_spei(df: pd.DataFrame):
+    p = df["Niederschlagsmenge_mm"].astype(float)
+    t = df["Temperatur_Celsius"].astype(float)
+
+    mon = pd.DataFrame({
+        "P": p.resample("ME").sum(),
+        "T": t.resample("ME").mean(),
+    }).dropna()
+
+    mon["Monat"] = mon.index.month
+
+    # Thornthwaite-PET (monatlich) fuer SPEI-nahe Wasserbilanz
+    daylen = {
+        1: 8.3, 2: 10.0, 3: 11.9, 4: 14.1, 5: 15.8, 6: 16.6,
+        7: 16.0, 8: 14.5, 9: 12.6, 10: 10.5, 11: 8.8, 12: 7.8,
+    }
+
+    pet_list = []
+    for jahr, g in mon.groupby(mon.index.year):
+        g = g.copy()
+        t_pos = g["T"].clip(lower=0)
+        I = ((t_pos / 5) ** 1.514).sum()
+        if I <= 0:
+            g["PET"] = 0.0
+        else:
+            a = (6.75e-7) * (I ** 3) - (7.71e-5) * (I ** 2) + (1.792e-2) * I + 0.49239
+
+            def pet_month(row):
+                tm = max(row["T"], 0)
+                if tm == 0:
+                    return 0.0
+                m = int(row["Monat"])
+                n_days = row.name.days_in_month
+                heat = (10 * tm / I) ** a
+                return 16 * (daylen[m] / 12) * (n_days / 30) * heat
+
+            g["PET"] = g.apply(pet_month, axis=1)
+        pet_list.append(g)
+
+    mon = pd.concat(pet_list).sort_index()
+    mon["D"] = mon["P"] - mon["PET"]
+
+    # 3-Monatsaggregation
+    mon["P3"] = mon["P"].rolling(3, min_periods=3).sum()
+    mon["D3"] = mon["D"].rolling(3, min_periods=3).sum()
+
+    def monthwise_standardize(series: pd.Series) -> pd.Series:
+        out = pd.Series(index=series.index, dtype=float)
+        for m in range(1, 13):
+            idx = series.index.month == m
+            s = series[idx]
+            std = s.std()
+            if pd.isna(std) or std == 0:
+                out[idx] = np.nan
+            else:
+                out[idx] = (s - s.mean()) / std
+        return out
+
+    mon["SPI3"] = monthwise_standardize(mon["P3"])
+    mon["SPEI3"] = monthwise_standardize(mon["D3"])
+
+    trocken_monate = pd.DataFrame({
+        "SPI3 <= -1": (mon["SPI3"] <= -1).resample("YE").sum(),
+        "SPI3 <= -1.5": (mon["SPI3"] <= -1.5).resample("YE").sum(),
+        "SPEI3 <= -1": (mon["SPEI3"] <= -1).resample("YE").sum(),
+        "SPEI3 <= -1.5": (mon["SPEI3"] <= -1.5).resample("YE").sum(),
+    }).dropna()
+    trocken_monate.index = trocken_monate.index.year
+
+    print()
+    print("=" * 62)
+    print("DUERREINDIZES (SPI-3 / SPEI-3, standardisiert)")
+    print("=" * 62)
+    print(f"  Monate SPI3 <= -1 pro Jahr:   {trocken_monate['SPI3 <= -1'].mean():.2f}")
+    print(f"  Monate SPI3 <= -1.5 pro Jahr: {trocken_monate['SPI3 <= -1.5'].mean():.2f}")
+    print(f"  Monate SPEI3 <= -1 pro Jahr:  {trocken_monate['SPEI3 <= -1'].mean():.2f}")
+    print(f"  Monate SPEI3 <= -1.5 pro Jahr:{trocken_monate['SPEI3 <= -1.5'].mean():.2f}")
+
+    fig, axes = plt.subplots(2, 1, figsize=(14, 10), sharex=False)
+
+    ax = axes[0]
+    ax.plot(mon.index, mon["SPI3"], color="royalblue", linewidth=1.3, label="SPI-3")
+    ax.plot(mon.index, mon["SPEI3"], color="firebrick", linewidth=1.3, label="SPEI-3")
+    ax.axhline(0, color="black", linewidth=0.8)
+    ax.axhline(-1, color="gray", linestyle="--", linewidth=0.8)
+    ax.axhline(-1.5, color="gray", linestyle=":", linewidth=0.8)
+    ax.set_title("Monatliche Duerreindizes")
+    ax.set_ylabel("z-Score")
+    ax.legend(fontsize=8)
+    ax.grid(alpha=0.3)
+
+    ax2 = axes[1]
+    x = trocken_monate.index.values
+    w = 0.2
+    ax2.bar(x - 1.5 * w, trocken_monate["SPI3 <= -1"], width=w, color="royalblue", alpha=0.8, label="SPI<=-1")
+    ax2.bar(x - 0.5 * w, trocken_monate["SPI3 <= -1.5"], width=w, color="navy", alpha=0.8, label="SPI<=-1.5")
+    ax2.bar(x + 0.5 * w, trocken_monate["SPEI3 <= -1"], width=w, color="tomato", alpha=0.8, label="SPEI<=-1")
+    ax2.bar(x + 1.5 * w, trocken_monate["SPEI3 <= -1.5"], width=w, color="firebrick", alpha=0.8, label="SPEI<=-1.5")
+    ax2.set_title("Anzahl duerre Monate pro Jahr")
+    ax2.set_ylabel("Monate/Jahr")
+    ax2.set_xlabel("Jahr")
+    ax2.legend(fontsize=8, ncol=2)
+    ax2.grid(axis="y", alpha=0.3)
+
+    plt.tight_layout()
+    fig.savefig(OUTPUT_DIR / "21_duerre_spi_spei.png", dpi=150)
+    plt.close(fig)
+    print("→ Gespeichert: 21_duerre_spi_spei.png")
+
+
+# ---------------------------------------------------------------------------
+# 23. Hitze-Gesundheitsindikatoren
+# ---------------------------------------------------------------------------
+def hitze_gesundheitsindikatoren(df: pd.DataFrame):
+    tmax = df["Max_Temperatur_Celsius"].dropna()
+    tmin = df["Min_Temperatur_Celsius"].dropna()
+    rh = df["Relative_Feuchte_Prozent"].dropna()
+
+    idx = tmax.index.intersection(rh.index)
+    tmax_rh = tmax.loc[idx]
+    rh_aligned = rh.loc[idx]
+
+    heisse_tage = (tmax >= 30)
+    tropennaechte = (tmin >= 20)
+
+    # Vereinfachter Hitzebelastungstag: sehr heiss oder heiss+schwuel
+    belastung = (tmax_rh >= 32) | ((tmax_rh >= 30) & (rh_aligned >= 50))
+
+    # Hitzewellen (>=3 aufeinanderfolgende heisse Tage)
+    hw_events = []
+    hw_days = pd.Series(False, index=heisse_tage.index)
+    cur = 0
+    run_start = None
+    prev_date = None
+    for d, is_hot in heisse_tage.items():
+        if prev_date is not None and (d - prev_date).days > 1:
+            if cur >= 3:
+                hw_events.append((run_start, prev_date, cur))
+                hw_days.loc[run_start:prev_date] = True
+            cur = 0
+            run_start = None
+        if is_hot:
+            if cur == 0:
+                run_start = d
+            cur += 1
+        else:
+            if cur >= 3:
+                hw_events.append((run_start, prev_date, cur))
+                hw_days.loc[run_start:prev_date] = True
+            cur = 0
+            run_start = None
+        prev_date = d
+    if cur >= 3:
+        hw_events.append((run_start, prev_date, cur))
+        hw_days.loc[run_start:prev_date] = True
+
+    jahres = pd.DataFrame({
+        "Heisse Tage (>=30C)": heisse_tage.resample("YE").sum(),
+        "Tropennaechte (>=20C)": tropennaechte.resample("YE").sum(),
+        "Belastungstage": belastung.resample("YE").sum(),
+        "Hitzewellentage (in Runs>=3)": hw_days.resample("YE").sum(),
+    }).fillna(0)
+    jahres.index = jahres.index.year
+
+    hw_event_year = pd.Series([s.year for s, _, _ in hw_events]).value_counts().sort_index()
+    jahres["Hitzewellen-Ereignisse"] = hw_event_year.reindex(jahres.index).fillna(0).astype(int)
+
+    print()
+    print("=" * 64)
+    print("HITZE-GESUNDHEITSINDIKATOREN")
+    print("=" * 64)
+    print(f"  Heisse Tage/Jahr:            {jahres['Heisse Tage (>=30C)'].mean():.1f}")
+    print(f"  Tropennaechte/Jahr:          {jahres['Tropennaechte (>=20C)'].mean():.1f}")
+    print(f"  Belastungstage/Jahr:         {jahres['Belastungstage'].mean():.1f}")
+    print(f"  Hitzewellentage/Jahr:        {jahres['Hitzewellentage (in Runs>=3)'].mean():.1f}")
+    print(f"  Hitzewellen-Ereignisse/Jahr: {jahres['Hitzewellen-Ereignisse'].mean():.1f}")
+
+    fig, axes = plt.subplots(3, 1, figsize=(14, 12), sharex=True)
+
+    ax = axes[0]
+    ax.bar(jahres.index, jahres["Heisse Tage (>=30C)"], color="firebrick", alpha=0.75, width=0.8,
+           label="Heisse Tage")
+    ax.bar(jahres.index, jahres["Tropennaechte (>=20C)"], color="darkorange", alpha=0.65, width=0.8,
+           label="Tropennaechte")
+    ax.plot(jahres["Heisse Tage (>=30C)"].rolling(10, center=True).mean(), color="black", linewidth=2)
+    ax.set_title("Hitzetage und Tropennaechte")
+    ax.set_ylabel("Tage/Jahr")
+    ax.legend(fontsize=8)
+    ax.grid(axis="y", alpha=0.3)
+
+    ax2 = axes[1]
+    ax2.bar(jahres.index, jahres["Hitzewellentage (in Runs>=3)"], color="purple", alpha=0.75, width=0.8,
+            label="Hitzewellentage")
+    ax2.plot(jahres["Hitzewellentage (in Runs>=3)"].rolling(10, center=True).mean(), color="black", linewidth=2)
+    ax2.set_title("Hitzewellentage (mindestens 3 heisse Tage in Folge)")
+    ax2.set_ylabel("Tage/Jahr")
+    ax2.legend(fontsize=8)
+    ax2.grid(axis="y", alpha=0.3)
+
+    ax3 = axes[2]
+    ax3.bar(jahres.index, jahres["Belastungstage"], color="crimson", alpha=0.75, width=0.8,
+            label="Belastungstage")
+    ax3.plot(jahres["Belastungstage"].rolling(10, center=True).mean(), color="black", linewidth=2)
+    ax3.set_title("Vereinfachte Hitzebelastungstage")
+    ax3.set_ylabel("Tage/Jahr")
+    ax3.set_xlabel("Jahr")
+    ax3.legend(fontsize=8)
+    ax3.grid(axis="y", alpha=0.3)
+
+    plt.tight_layout()
+    fig.savefig(OUTPUT_DIR / "22_hitze_gesundheit.png", dpi=150)
+    plt.close(fig)
+    print("→ Gespeichert: 22_hitze_gesundheit.png")
+
+
+# ---------------------------------------------------------------------------
 # Haupt
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
@@ -1342,6 +1636,9 @@ if __name__ == "__main__":
     temperatur_heatmap(df)
     windrose_klassen(df)
     jahresgang_baender(df)
+    starkregen_vertieft(df)
+    duerreindizes_spi_spei(df)
+    hitze_gesundheitsindikatoren(df)
 
     print()
     print(f"Alle Grafiken gespeichert in: {OUTPUT_DIR}")
