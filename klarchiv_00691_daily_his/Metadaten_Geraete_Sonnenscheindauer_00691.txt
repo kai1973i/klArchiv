@@ -1,0 +1,12 @@
+Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m];Geberhoehe ueber Grund [m];Von_Datum;Bis_Datum;Geraetetyp Name;Messverfahren;eor;
+691;Bremen;8.8;53.05;4;9;19360101;19450331;Sonnenscheinschreiber nach Campbell-Stokes;Sonnenscheinregistrierung, konv.;eor;
+691;Bremen;8.79;53.05;4;10.5;19490201;19530621;Sonnenscheinschreiber nach Campbell-Stokes;Sonnenscheinregistrierung, konv.;eor;
+691;Bremen;8.79;53.05;3.22;10.5;19530622;19720308;Sonnenscheinschreiber nach Campbell-Stokes;Sonnenscheinregistrierung, konv.;eor;
+691;Bremen;8.79;53.05;3.67;10.5;19720309;19730930;Sonnenscheinschreiber nach Campbell-Stokes;Sonnenscheinregistrierung, konv.;eor;
+691;Bremen;8.79;53.05;3.67;16.6;19731001;19780531;Sonnenscheinschreiber nach Campbell-Stokes;Sonnenscheinregistrierung, konv.;eor;
+691;Bremen;8.8;53.04;4.05;4.06;19780601;19910702;Sonnenscheinschreiber nach Campbell-Stokes;Sonnenscheinregistrierung, konv.;eor;
+691;Bremen;8.8;53.04;4.05;4.1;19910703;20080930;SONIe Sonnenenergie-Sensor;Sonnenscheindauer, elektr.;eor;
+691;Bremen;8.8;53.05;4.04;4.1;20081001;20170920;SONIe Sonnenenergie-Sensor;Sonnenscheindauer, elektr.;eor;
+691;Bremen;8.8;53.05;4.04;4.1;20210705;20250310;SONIe Sonnenenergie-Sensor e2;Sonnenscheindauer, elektr.;eor;
+691;Bremen;8.8;53.05;4.04;4.1;20250227;20250506;Pyranometer CMP22 (+Sonne);Sonnenscheind/Strahlungs-/Sonnenscheinmessung, elektr.;eor;
+generiert: 15.05.2025 --  Deutscher Wetterdienst  --

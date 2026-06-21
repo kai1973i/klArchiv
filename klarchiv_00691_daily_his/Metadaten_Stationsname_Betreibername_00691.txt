@@ -1,0 +1,7 @@
+Stations_ID;Stationsname;Von_Datum;Bis_Datum
+   691;Bremen;17960101;
+
+Stations_ID;Betreibername;Von_Datum;Bis_Datum
+   691;Wetterdienst;17960101;19521110
+   691;DWD;19521111;
+generiert: 15.05.2025 --  Deutscher Wetterdienst  --

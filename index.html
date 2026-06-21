@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Klimaanalyse Bremen 1890-2026 | Bericht und Umsetzungsprogramm</title>
+  <style>
+    :root {
+      --bg: #f4f7f9;
+      --surface: #ffffff;
+      --text: #1f2a37;
+      --muted: #556274;
+      --primary: #0b5e8e;
+      --accent: #db5a2a;
+      --ok: #2d7c44;
+      --border: #d8e0e7;
+      --shadow: 0 10px 24px rgba(22, 34, 51, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Calibri", "Trebuchet MS", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% -10%, #d9edf8 0%, transparent 40%),
+        radial-gradient(circle at 90% 0%, #ffe7db 0%, transparent 35%),
+        var(--bg);
+      line-height: 1.5;
+    }
+
+    .container {
+      width: min(1200px, 94vw);
+      margin: 32px auto 48px;
+    }
+
+    .hero {
+      background: linear-gradient(130deg, #0b5e8e, #0f7bb8 56%, #2b9bd4);
+      color: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      right: -120px;
+      bottom: -140px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.55rem, 1.6vw + 1rem, 2.4rem);
+      letter-spacing: 0.2px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.2rem, 1.1vw + 0.9rem, 1.65rem);
+      color: var(--primary);
+    }
+
+    h3 {
+      margin: 10px 0;
+      font-size: 1.05rem;
+      color: #0a486d;
+    }
+
+    .meta {
+      margin: 6px 0 0;
+      color: #dcecf7;
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card.full { grid-column: span 12; }
+    .card.half { grid-column: span 6; }
+    .card.third { grid-column: span 4; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      padding: 9px 8px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f1f6fb;
+      color: #154a6b;
+      font-weight: 600;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.78rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e8f3fa;
+      color: #0a577f;
+      border: 1px solid #c5deee;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    .signal {
+      border-left: 5px solid var(--accent);
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #fff6f2;
+      margin-bottom: 10px;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .kpi {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      background: #fbfdff;
+    }
+
+    .kpi .label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .kpi .value {
+      font-weight: 700;
+      color: #17344d;
+      font-size: 1.12rem;
+    }
+
+    .phase {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: #fbfdff;
+    }
+
+    .phase .title {
+      font-weight: 700;
+      color: #184663;
+      margin-bottom: 8px;
+    }
+
+    ul { margin: 8px 0 0 18px; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    figure {
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #eef3f6;
+    }
+
+    figcaption {
+      font-size: 0.84rem;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 920px) {
+      .card.half, .card.third { grid-column: span 12; }
+      .kpi-row { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+      .kpi-row { grid-template-columns: 1fr; }
+      figure img { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <h1>Klimaanalyse Bremen (1890-2026)</h1>
+      <p>Bericht fuer Veroeffentlichung: Datenauswertung, Klimasignale und 12-Monats-Umsetzungsprogramm fuer kommunale Anpassung.</p>
+      <p class="meta">Datenbasis: DWD Tagesdaten Station 00691 (Bremen) | Erstellungsdatum: 21.06.2026</p>
+      <p class="meta">GitHub Pages bereit: Datei als <strong>index.html</strong> im Repository-Root.</p>
+    </header>
+
+    <section class="grid">
+      <article class="card full">
+        <h2>Executive Summary</h2>
+        <div class="kpi-row">
+          <div class="kpi"><div class="label">Temperaturtrend</div><div class="value">+0,10 C/Jahrzehnt</div></div>
+          <div class="kpi"><div class="label">Anomalie seit 2020</div><div class="value">+1,38 C</div></div>
+          <div class="kpi"><div class="label">Fruehlingsbeginn</div><div class="value">-2,30 Tage/Jhz</div></div>
+          <div class="kpi"><div class="label">Wintertrend</div><div class="value">+0,13 C/Jhz</div></div>
+        </div>
+        <p class="footer-note">Die Auswertungen zeigen einen klaren Erwarmungstrend mit frueherem Fruehlingsbeginn, wachsender Hitzebelastung und sommerlichen Wasserdefiziten.</p>
+      </article>
+
+      <article class="card full">
+        <h2>Kompakte Vergleichstabelle (Module 1-19)</h2>
+        <table>
+          <thead>
+            <tr><th>Modul</th><th>Thema</th><th>Kernindikator</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Fehlwerte</td><td>Mittl. Fehlwertquote 24,3%</td></tr>
+            <tr><td>2</td><td>Temperaturtrend</td><td>+0,10 C/Jahrzehnt</td></tr>
+            <tr><td>3</td><td>Niederschlagstrend</td><td>+0,8 mm/Jahrzehnt</td></tr>
+            <tr><td>4</td><td>Sonnenscheintrend</td><td>+158,2 h/Jahrzehnt</td></tr>
+            <tr><td>5</td><td>Extremwerte</td><td>Tmax-Rekord 37,6 C</td></tr>
+            <tr><td>6</td><td>Saisonale Muster</td><td>Juli-Jan Delta 16,3 C</td></tr>
+            <tr><td>7</td><td>Korrelation</td><td>max abs(r)=0,98 (Tmean vs Tmax)</td></tr>
+            <tr><td>8</td><td>Hitzeextreme</td><td>Heisse Tage Trend +0,40 Tage/Jahrzehnt</td></tr>
+            <tr><td>9</td><td>Regenextreme</td><td>Tage >=20 mm Trend +0,04 Tage/Jahrzehnt</td></tr>
+            <tr><td>10</td><td>Klimanormalperioden</td><td>Juli 2001-2026 vs 1961-1990: +1,45 C</td></tr>
+            <tr><td>11</td><td>Anomalien</td><td>2020+ Mittelanomalie +1,38 C</td></tr>
+            <tr><td>12</td><td>Fruehlingsbeginn</td><td>Trend -2,30 Tage/Jahrzehnt</td></tr>
+            <tr><td>13</td><td>Saisontrends</td><td>Sommer +0,09 | Winter +0,13 C/Jahrzehnt</td></tr>
+            <tr><td>14</td><td>Trockenperioden</td><td>Trend max. Trockenserie +0,01 Tage/Jahrzehnt</td></tr>
+            <tr><td>15</td><td>Vegetationsperiode</td><td>Trend -0,35 Tage/Jahrzehnt</td></tr>
+            <tr><td>16</td><td>Rekord-Zeitachse</td><td>Hitzerekorde gesamt 22, seit 1990: 1</td></tr>
+            <tr><td>17</td><td>Wasserbalance</td><td>Trend -1,5 mm/Jahrzehnt, Mittel +36,5 mm</td></tr>
+            <tr><td>18</td><td>Persistenz</td><td>Lag1 Temp 0,946 | Lag1 Regen 0,198</td></tr>
+            <tr><td>19</td><td>Heatmap/Jahresgang</td><td>Trend Jan +0,13 | Jul +0,09 C/Jahrzehnt</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card half">
+        <h2>Top-5 Klimasignale</h2>
+        <div class="signal"><strong>1. Juli-Erwaermung:</strong> +1,45 C (2001-2026 vs 1961-1990).</div>
+        <div class="signal"><strong>2. Hohe aktuelle Waermeanomalie:</strong> +1,38 C seit 2020.</div>
+        <div class="signal"><strong>3. Winter erwaermt sich am staerksten:</strong> +0,13 C/Jahrzehnt.</div>
+        <div class="signal"><strong>4. Frueherer Fruehlingsbeginn:</strong> -2,30 Tage/Jahrzehnt.</div>
+        <div class="signal"><strong>5. Mehr heisse Tage:</strong> +0,40 Tage/Jahrzehnt.</div>
+      </article>
+
+      <article class="card half">
+        <h2>Priorisierte Anpassungsfelder</h2>
+        <p>
+          <span class="pill">1) Hitzevorsorge</span>
+          <span class="pill">2) Schwammstadt</span>
+          <span class="pill">3) Resilientes Stadtgruen</span>
+          <span class="pill">4) Klimafitte Gebaeude</span>
+          <span class="pill">5) Monitoring</span>
+        </p>
+        <ul>
+          <li>Hitzeaktionsketten mit Triggerwerten und Schutz fuer vulnerable Gruppen.</li>
+          <li>Regenrueckhalt und Entsiegelung in hitze- und ueberflutungsrelevanten Quartieren.</li>
+          <li>Klimarobuste Pflanzungen und Schattenachsen in Aufenthaltsbereichen.</li>
+          <li>Sommerlicher Waermeschutz im Bestand und Neubau.</li>
+          <li>Jaehrliches Klima-Dashboard mit messbaren Zielwerten.</li>
+        </ul>
+      </article>
+
+      <article class="card full">
+        <h2>12-Monats-Umsetzungsprogramm</h2>
+
+        <div class="phase">
+          <div class="title">Phase 1 (Monat 1-3) | Sofortstart</div>
+          <ul>
+            <li>Hitzeschutzplan finalisieren: Alarmkette, Kommunikationsschema, Betreiberliste sensibler Einrichtungen.</li>
+            <li>Hotspot-Mapping: Hitzelast, Versiegelung, Aufenthaltsdichte, vulnerable Gruppen.</li>
+            <li>Schnellmassnahmen: mobile Verschattung, Trinkwasserpunkte, temporaere Kuehlorte.</li>
+            <li>Kostenklasse: gering bis mittel.</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="title">Phase 2 (Monat 4-6) | Infrastruktur und Wasser</div>
+          <ul>
+            <li>3-5 Pilotquartiere fuer Schwammstadt-Massnahmen (Mulden, Rigolen, Retentionsflaechen).</li>
+            <li>Entkopplungsprogramm fuer Dach- und Hofflaechen starten.</li>
+            <li>Sommer-Wasserdefizit-Monitoring als regelmaessigen Bericht einfuehren.</li>
+            <li>Kostenklasse: mittel.</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="title">Phase 3 (Monat 7-9) | Stadtgruen und Bau</div>
+          <ul>
+            <li>Baumartenstrategie (trockenheits- und hitzetolerant) mit Pflegekonzept ueber 3 Jahre.</li>
+            <li>Prioritaere Umgestaltung von Schulhoefen und Haltestellen zu Schatteninseln.</li>
+            <li>Verwaltungsvorgabe fuer sommerlichen Waermeschutz bei Neubau/Sanierung beschliessen.</li>
+            <li>Kostenklasse: mittel bis hoch.</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="title">Phase 4 (Monat 10-12) | Verstetigung</div>
+          <ul>
+            <li>Wirkungsmonitoring je Massnahme (KPI: Oberflaechentemperatur, Aufenthaltsqualitaet, Rueckhaltvolumen).</li>
+            <li>Massnahmen-Benchmark und Budgetanpassung fuer Folgejahr.</li>
+            <li>Veroeffentlichung eines jaehrlichen Klima-Anpassungsberichts.</li>
+            <li>Kostenklasse: gering bis mittel (Monitoring) plus Folgeinvestitionen.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="card full">
+        <h2>Grafikauswahl (Analyseergebnisse)</h2>
+        <div class="gallery">
+          <figure><img src="output/08_klimanormalperioden.png" alt="Klimanormalperioden" /><figcaption>Klimanormalperiodenvergleich</figcaption></figure>
+          <figure><img src="output/09a_temperaturanomalie.png" alt="Temperaturanomalie" /><figcaption>Jahresanomalien</figcaption></figure>
+          <figure><img src="output/09b_warming_stripes.png" alt="Warming Stripes" /><figcaption>Warming Stripes</figcaption></figure>
+          <figure><img src="output/10_fruehlingsbeginn.png" alt="Fruehlingsbeginn" /><figcaption>Fruehlingsbeginn-Verschiebung</figcaption></figure>
+          <figure><img src="output/11_saisonale_trends.png" alt="Saisonale Trends" /><figcaption>Saisonale Temperaturtrends</figcaption></figure>
+          <figure><img src="output/12_trockenperioden.png" alt="Trockenperioden" /><figcaption>Trockenperioden pro Jahr</figcaption></figure>
+          <figure><img src="output/13_vegetationsperiode.png" alt="Vegetationsperiode" /><figcaption>Vegetationsperiode</figcaption></figure>
+          <figure><img src="output/15_wasserbalance.png" alt="Wasserbalance" /><figcaption>Klimatische Wasserbalance</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="card full">
+        <h2>Veröffentlichung auf GitHub Pages</h2>
+        <ol>
+          <li>Repository nach GitHub pushen (inkl. <code>index.html</code> und Ordner <code>output/</code>).</li>
+          <li>In GitHub: <strong>Settings -> Pages</strong> öffnen.</li>
+          <li>Source auf den gewünschten Branch setzen (z. B. <strong>main</strong>, Folder: <strong>/(root)</strong>).</li>
+          <li>Speichern, danach ist der Bericht unter der Pages-URL direkt erreichbar.</li>
+        </ol>
+        <p class="footer-note">Optional: Diese Datei bleibt als zentrale Startseite; Detailvarianten koennen als zusaetzliche HTML-Seiten ergänzt werden.</p>
+      </article>
+    </section>
+
+    <p class="footer-note">
+      Hinweis: Diese Seite ist fuer die direkte Veroeffentlichung vorbereitet. Bei Bedarf kann sie in ein CMS uebernommen oder als PDF exportiert werden.
+    </p>
+  </main>
+</body>
+</html>

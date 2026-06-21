@@ -1,0 +1,9 @@
+Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m];Geberhoehe ueber Grund [m];Von_Datum;Bis_Datum;Geraetetyp Name;Messverfahren;eor;
+691;Bremen;8.79;53.05;4;10;19510101;19530621;Universal-Windmesser 82;Windmessung;eor;
+691;Bremen;8.79;53.05;3.22;10;19530622;19540531;Universal-Windmesser 82;Windmessung;eor;
+691;Bremen;8.79;53.05;3.22;10;19540601;19720308;Universal-Windschreiber 90;Windmessung, elektromechanisch;eor;
+691;Bremen;8.79;53.05;3.67;10;19720309;19780531;Universal-Windschreiber 90;Windmessung, elektromechanisch;eor;
+691;Bremen;8.8;53.04;4.05;10;19780601;19911031;Universal-Windschreiber 90;Windmessung, elektromechanisch;eor;
+691;Bremen;8.8;53.04;4.05;10;19911101;20080930;Windsensor Classic 4.3303 (DWDSYN);Windmessung, elektr.;eor;
+691;Bremen;8.8;53.05;4.04;10;20081001;20260620;Windsensor Classic 4.3303 (DWDSYN);Windmessung, elektr.;eor;
+generiert: 21.06.2026 --  Deutscher Wetterdienst  --
