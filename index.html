@@ -199,6 +199,42 @@
       height: 180px;
       object-fit: cover;
       background: #eef3f6;
+      cursor: zoom-in;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 14, 24, 0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: min(96vw, 1400px);
+      max-height: 88vh;
+      border-radius: 10px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+      background: #fff;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 1.1rem;
+      line-height: 1;
+      background: rgba(255, 255, 255, 0.92);
+      color: #1f2a37;
+      cursor: pointer;
     }
 
     figcaption {
@@ -377,5 +413,47 @@
       Hinweis: Diese Seite ist fuer die direkte Veroeffentlichung vorbereitet. Bei Bedarf kann sie in ein CMS uebernommen oder als PDF exportiert werden.
     </p>
   </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Schließen">×</button>
+    <img id="lightboxImage" alt="Vergrößerte Grafik" />
+  </div>
+
+  <script>
+    (function () {
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImage = document.getElementById("lightboxImage");
+      const lightboxClose = document.getElementById("lightboxClose");
+      const images = document.querySelectorAll(".gallery figure img");
+
+      function openLightbox(src, alt) {
+        lightboxImage.src = src;
+        lightboxImage.alt = alt || "Vergrößerte Grafik";
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+        lightboxImage.src = "";
+      }
+
+      images.forEach((img) => {
+        img.addEventListener("click", () => openLightbox(img.src, img.alt));
+      });
+
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && lightbox.classList.contains("open")) {
+          closeLightbox();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
