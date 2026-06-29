@@ -9,5 +9,5 @@ Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m]
 691;Bremen;8.8;53.05;4.04;4.1;20081001;20170920;SONIe Sonnenenergie-Sensor;Sonnenscheindauer, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;4.1;20210705;20250227;SONIe Sonnenenergie-Sensor e2;Sonnenscheindauer, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;4.1;20250228;20250426;Pyranometer CMP22 (+Sonne);Sonnenscheind/Strahlungs-/Sonnenscheinmessung, elektr.;eor;
-691;Bremen;8.8;53.05;4.04;4.1;20250513;20260620;Pyranometer CMP22 (+Sonne);Sonnenscheind/Strahlungs-/Sonnenscheinmessung, elektr.;eor;
-generiert: 21.06.2026 --  Deutscher Wetterdienst  --
+691;Bremen;8.8;53.05;4.04;4.1;20250513;20260628;Pyranometer CMP22 (+Sonne);Sonnenscheind/Strahlungs-/Sonnenscheinmessung, elektr.;eor;
+generiert: 29.06.2026 --  Deutscher Wetterdienst  --

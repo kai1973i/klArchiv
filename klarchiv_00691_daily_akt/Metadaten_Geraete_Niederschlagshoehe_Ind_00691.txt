@@ -1,5 +1,5 @@
 Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m];Geberhoehe ueber Grund [m];Von_Datum;Bis_Datum;Geraetetyp Name;Messverfahren;eor;
 691;Bremen;8.8;53.04;4.05;1;19910619;20080930;Niederschlags-Detektor;Niederschlagsdauer, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;1;20081001;20160726;Niederschlags-Detektor;Niederschlagsdauer, elektr.;eor;
-691;Bremen;8.8;53.05;4.04;1;20160727;20260620;Niederschlagswächter;Niederschlagsdauer, elektr.;eor;
-generiert: 21.06.2026 --  Deutscher Wetterdienst  --
+691;Bremen;8.8;53.05;4.04;1;20160727;20260628;Niederschlagswächter;Niederschlagsdauer, elektr.;eor;
+generiert: 29.06.2026 --  Deutscher Wetterdienst  --

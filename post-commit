@@ -1,0 +1,20 @@
+#!/bin/bash
+# Post-commit hook für git
+# Aktualisiert die kombinierte CSV nach neuen Daten-Commits
+# 
+# Installation:
+#   cp post-commit .git/hooks/post-commit
+#   chmod +x .git/hooks/post-commit
+
+# Nur ausführen, wenn neue Daten eingecheckt wurden
+if git diff --cached --name-only | grep -q "klarchiv_.*_daily_.*produkt_klima_tag.*\.txt"; then
+    echo "📊 Erkannte neue Klimadaten – aktualisiere kombinierte CSV..."
+    python3 "$(dirname "$0")/../update_combined_csv.py"
+    
+    if [ $? -eq 0 ]; then
+        echo "✓ CSV erfolgreich aktualisiert"
+        git add produkt_klima_tag_combined.csv produkt_klima_tag_combined_klartext.csv
+    else
+        echo "❌ Fehler beim Aktualisieren der CSV" >&2
+    fi
+fi

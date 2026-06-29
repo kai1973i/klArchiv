@@ -11,5 +11,5 @@ Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m]
 691;Bremen;8.8;53.04;4.05;2.2;19780601;19910618;Psychrometerthermometer (trocken);Temperatur/Feuchtemessung, konv.;eor;
 691;Bremen;8.8;53.04;4.05;2;19910619;20080930;PT 100 (Luft);Temperaturmessung, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;2;20081001;20230911;PT 100 (Luft);Temperaturmessung, elektr.;eor;
-691;Bremen;8.8;53.05;4.04;2;20230918;20260620;PT 100 (Luft);Temperaturmessung, elektr.;eor;
-generiert: 21.06.2026 --  Deutscher Wetterdienst  --
+691;Bremen;8.8;53.05;4.04;2;20230918;20260628;PT 100 (Luft);Temperaturmessung, elektr.;eor;
+generiert: 29.06.2026 --  Deutscher Wetterdienst  --

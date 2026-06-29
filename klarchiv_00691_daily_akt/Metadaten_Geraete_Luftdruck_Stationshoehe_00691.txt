@@ -14,5 +14,5 @@ Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m]
 691;Bremen;8.8;53.05;4.04;5.35;20081001;20081030;Digitalbarometer AIR-DB;Luftdruckmessung, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;5.35;20081031;20141215;Luftdrucksensor Vaisala PTB 220;Luftdruckmessung, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;5.35;20141216;20230418;Digitalbarometer PTB 330 (mit Anzeige, dreifach);Luftdruckmessung, elektr.;eor;
-691;Bremen;8.8;53.05;4.04;5.35;20230419;20260620;Digitalbarometer PTB 330 (ohne Anzeige, einfach);Luftdruckmessung, elektr.;eor;
-generiert: 21.06.2026 --  Deutscher Wetterdienst  --
+691;Bremen;8.8;53.05;4.04;5.35;20230419;20260628;Digitalbarometer PTB 330 (ohne Anzeige, einfach);Luftdruckmessung, elektr.;eor;
+generiert: 29.06.2026 --  Deutscher Wetterdienst  --

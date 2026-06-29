@@ -8,5 +8,5 @@ Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m]
 691;Bremen;8.79;53.05;3.67;;19720309;19780531;Schneepegel;Schneehöhenmessung, manuell;eor;
 691;Bremen;8.8;53.04;4.05;;19780601;20080930;Schneepegel;Schneehöhenmessung, manuell;eor;
 691;Bremen;8.8;53.05;4.04;;20081001;20220531;Schneepegel;Schneehöhenmessung, manuell;eor;
-691;Bremen;8.8;53.05;4.04;1.8;20241118;20260620;Schneehöhensensor SHM 31;Schneehöhenmessung, elektr.;eor;
-generiert: 21.06.2026 --  Deutscher Wetterdienst  --
+691;Bremen;8.8;53.05;4.04;1.8;20241118;20260628;Schneehöhensensor SHM 31;Schneehöhenmessung, elektr.;eor;
+generiert: 29.06.2026 --  Deutscher Wetterdienst  --

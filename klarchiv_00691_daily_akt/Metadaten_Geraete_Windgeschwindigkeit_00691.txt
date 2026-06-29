@@ -10,5 +10,5 @@ Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m]
 691;Bremen;8.79;53.05;3.67;10;19720309;19780531;Universal-Windschreiber 90;Windmessung, elektromechanisch;eor;
 691;Bremen;8.8;53.04;4.05;10;19780601;19911031;Universal-Windschreiber 90;Windmessung, elektromechanisch;eor;
 691;Bremen;8.8;53.04;4.05;10;19911101;20080930;Windsensor Classic 4.3303 (DWDSYN);Windmessung, elektr.;eor;
-691;Bremen;8.8;53.05;4.04;10;20081001;20260620;Windsensor Classic 4.3303 (DWDSYN);Windmessung, elektr.;eor;
-generiert: 21.06.2026 --  Deutscher Wetterdienst  --
+691;Bremen;8.8;53.05;4.04;10;20081001;20260628;Windsensor Classic 4.3303 (DWDSYN);Windmessung, elektr.;eor;
+generiert: 29.06.2026 --  Deutscher Wetterdienst  --

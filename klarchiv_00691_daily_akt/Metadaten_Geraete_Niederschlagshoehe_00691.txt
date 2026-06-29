@@ -12,5 +12,5 @@ Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m]
 691;Bremen;8.8;53.04;4.05;1;19910619;20080930;Niederschlagssensor nach Joss-Tognini;Niederschlagsmenge, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;1;20081001;20081030;Niederschlagssensor nach Joss-Tognini;Niederschlagsmenge, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;1;20081031;20220511;PLUVIO;Niederschlagsmenge, elektr.;eor;
-691;Bremen;8.8;53.05;4.04;1;20220512;20260620;rain[e]H3, Wägetechnologie;Niederschlagsmenge, elektr.;eor;
-generiert: 21.06.2026 --  Deutscher Wetterdienst  --
+691;Bremen;8.8;53.05;4.04;1;20220512;20260628;rain[e]H3, Wägetechnologie;Niederschlagsmenge, elektr.;eor;
+generiert: 29.06.2026 --  Deutscher Wetterdienst  --

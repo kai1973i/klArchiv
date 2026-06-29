@@ -13,5 +13,5 @@ Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m]
 691;Bremen;8.8;53.05;4.04;2;20081001;20140929;Feuchtesonde HMP45D;Feuchtemessung, elektr.;eor;
 691;Bremen;8.8;53.05;4.04;2;20081001;20081030;Thermohygrograph;Temperatur- und Feuchtereg., konv.;eor;
 691;Bremen;8.8;53.05;4.04;2;20140930;20230911;EE33;Feuchtemessung, elektr.;eor;
-691;Bremen;8.8;53.05;4.04;2;20230918;20260620;EE33;Feuchtemessung, elektr.;eor;
-generiert: 21.06.2026 --  Deutscher Wetterdienst  --
+691;Bremen;8.8;53.05;4.04;2;20230918;20260628;EE33;Feuchtemessung, elektr.;eor;
+generiert: 29.06.2026 --  Deutscher Wetterdienst  --
